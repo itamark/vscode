@@ -1120,7 +1120,7 @@ export class SCMViewlet extends PanelViewlet implements IViewModel, IViewsViewle
 		this.onDidChangeRepositories();
 
 		if (!this.mainPanel) {
-			this.onSelectionChange(this.repositories);
+			this.onSelectionChange(this.repositories, false);
 		}
 	}
 
@@ -1257,7 +1257,7 @@ export class SCMViewlet extends PanelViewlet implements IViewModel, IViewsViewle
 		this.contributedViews.move(fromViewDescriptor.id, toViewDescriptor.id);
 	}
 
-	private onSelectionChange(repositories: ISCMRepository[]): void {
+	private onSelectionChange(repositories: ISCMRepository[], focus: boolean = true): void {
 		const wasSingleView = this.isSingleView();
 		const contributableViewsHeight = this.getContributableViewsSize();
 
@@ -1285,7 +1285,7 @@ export class SCMViewlet extends PanelViewlet implements IViewModel, IViewsViewle
 			this.addPanels([{ panel, size: panel.minimumSize, index: index++ }]);
 			panel.repository.focus();
 			panel.onDidFocus(() => this.lastFocusedRepository = panel.repository);
-			if (newRepositoryPanels.length === 1 || this.lastFocusedRepository === panel.repository) {
+			if ((newRepositoryPanels.length === 1 || this.lastFocusedRepository === panel.repository) && focus) {
 				panel.focus();
 			}
 		});
